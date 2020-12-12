@@ -44,7 +44,7 @@ Player* Player::GetInstance()
 
 void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 {
-	DebugOut(L"\n true - %d", GetSpeedLevel());
+	//DebugOut(L"X = %f y = %f", x,y);
 	Entity::Update(dt);
 #pragma region Xử lý vy
 	vy += MARIO_GRAVITY * dt;
@@ -162,8 +162,10 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 			else if (e->obj->GetType() == EntityType::BROKENBRICK)
 			{
 				BrokenBrick* brokenbrick = dynamic_cast<BrokenBrick*>(e->obj);
-				/*x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.001f;*/
+				//x += min_tx * dx + nx * 0.4f;
+				//y += min_ty * dy + ny * 0.001f;
+				//if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;
 				if (e->ny != 0)
 				{
 					if (e->ny == -1)
@@ -202,6 +204,28 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 				if (e->ny > 0)
 				{
 					brick->SetState(CBRICK_STATE_COLLISION);
+				}
+			}
+			else if (e->obj->GetType() == EntityType::BROKENBRICK)
+			{
+				BrokenBrick* brokenBrick = dynamic_cast<BrokenBrick*>(e->obj);
+				if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;
+				if (e->ny != 0)
+				{
+					if (e->ny == -1)
+					{
+						isGround = true;
+						isJumping = false;
+						if ((flyTrip && level == MARIO_LEVEL_RACCOON) || y > dGround) {
+							dGround = y + w;
+						}
+						flyTrip = false;
+					}
+				}
+				if (e->ny > 0)
+				{
+					brokenBrick->SetState(CBRICK_STATE_COLLISION);
 				}
 			}
 			else if (e->obj->GetType() == EntityType::BRICKSTAND)

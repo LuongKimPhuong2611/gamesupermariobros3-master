@@ -17,7 +17,7 @@ Koopa::Koopa(Player* mario, int id_Koopa)
 		timeToFly = GetTickCount64();
 
 	}
-	DebugOut(L"aaaaaaa \n");
+	//DebugOut(L"aaaaaaa \n");
 }
 
 void Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -262,7 +262,7 @@ void Koopa::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 					if (GetState() == KOOPA_RED_STATE_DIE_AND_MOVE || GetState() == KOOPA_RED_STATE_DIE_AND_MOVE_UP)
 					{
 						BrokenBrick* brokenbrick = dynamic_cast<BrokenBrick*>(e->obj);
-						brokenbrick->isDestroyed = true;
+						//brokenbrick->isDestroyed = true;
 						brokenbrick->SetState(STATE_DESTROYED);
 						vx = -vx;
 					}
@@ -297,7 +297,7 @@ void Koopa::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 					if (GetState() == KOOPA_GREEN_STATE_DIE_AND_MOVE || GetState() == KOOPA_GREEN_STATE_DIE_AND_MOVE_UP)
 					{
 						BrokenBrick* brokenbrick = dynamic_cast<BrokenBrick*>(e->obj);
-						brokenbrick->isDestroyed = true;
+						//brokenbrick->isDestroyed = true;
 						brokenbrick->SetState(STATE_DESTROYED);
 						vx = -vx;
 					}
@@ -353,7 +353,7 @@ void Koopa::CheckCollisionWithBrick(vector<LPGAMEENTITY>* coObjects)
 
 void Koopa::Render()
 {
-	DebugOut(L"nx %d ani %d \n", this->nx, state);
+	//DebugOut(L"nx %d ani %d \n", this->nx, state);
 	animationSet->at(state)->Render(-this->nx, x, y);
 	for (int i = 0; i < listEffect.size(); i++)
 	{

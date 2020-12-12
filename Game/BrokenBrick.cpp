@@ -15,6 +15,8 @@ BrokenBrick::BrokenBrick(int id_state)
 
 void BrokenBrick::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 {
+	if (isHide)
+		return;
 	if (isCoin)
 	{
 		this->SetAnimationSet(CAnimationSets::GetInstance()->Get(20));
@@ -28,7 +30,8 @@ void BrokenBrick::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 	//DebugOut(L"Gia tri cua state %d \n", id_broken_state);
 	/*if (isDestroyed)
 		DebugOut(L"dasdasdasdasda");*/
-
+	/*if (isDestroyed)
+		return;*/
 	for (int i = 0; i < listPiece.size(); i++)
 	{
 		listPiece[i]->Update(dt, coObjects);
@@ -37,6 +40,10 @@ void BrokenBrick::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 
 void BrokenBrick::Render()
 {
+	if (isHide)
+		return;
+	/*if (isDestroyed)
+		return;*/
 	RenderBoundingBox();
 	if (isCoin)
 	{
@@ -63,6 +70,8 @@ void BrokenBrick::Render()
 }
 void BrokenBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
+	if (isHide)
+		return;
 	if (isDestroyed)
 		return;
 	l = x;
@@ -75,21 +84,24 @@ void BrokenBrick::SetState(int State)
 	Entity::SetState(State);
 	switch (State)
 	{
+	case STATE_HIDE:
+		isHide = true;
+		break;
 	case STATE_BRICK_NORMAL:
+		isHide = false;
 		break;
 	case STATE_COIN_NO_ROTATE:
 		break;
 	case STATE_COIN_ROTATE:
 		break;
 	case STATE_DESTROYED:
+		isDestroyed = true;
 		EffectBrick* topLeftPiece = new EffectBrick({ x - 1, y - 2 }, -1, 2);
 		EffectBrick* topRightPiece = new EffectBrick({ x + 9, y - 2 }, 1, 2);
 		EffectBrick* bottomLeftPiece = new EffectBrick({ x - 1, y + 8 }, -1);
 		EffectBrick* bottomRightPiece = new EffectBrick({ x + 9, y + 8 }, 1);
 		listPiece = { topLeftPiece, topRightPiece, bottomLeftPiece, bottomRightPiece };
 		break;
-
-
 	}
 	/*if (State == STATE_BRICK_NORMAL)
 	{

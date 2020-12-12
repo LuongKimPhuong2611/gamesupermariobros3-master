@@ -88,6 +88,10 @@ enum EnemyType
 	DOMES = 3,
 	GUNNER = 4
 };
+enum DetailType
+{
+	COINBRICK = 1
+};
 enum EntityType
 {
 	//For Special Case
@@ -130,6 +134,7 @@ enum EntityType
 	CBRICK = 34,
 	BROKENBRICK = 35,
 	BRICKSTAND = 36,
+	P = 37,
 
 
 	//Item Zone 40-70

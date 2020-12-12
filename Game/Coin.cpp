@@ -26,8 +26,10 @@ void Coin::GetBoundingBox(float& l, float& t, float& r, float& b)
 Coin::Coin(float frameW, float frameH)
 {
 	tag = EntityType::COIN;
-	this->frameH = frameH;
-	this->frameW = frameW;
+	//this->frameH = frameH;
+	//this->frameW = frameW;
+	this->frameH = COIN_BBOX_HEIGHT;
+	this->frameW = COIN_BBOX_WIDTH;
 }
 
 void Coin::SetDone(bool isDone)

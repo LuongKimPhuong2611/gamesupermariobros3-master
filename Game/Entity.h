@@ -56,7 +56,7 @@ public:
 	float vx;
 	float vy;
 	int health;
-
+	DetailType detailTag;
 	bool holdthing;
 	bool make100;
 	bool make200;

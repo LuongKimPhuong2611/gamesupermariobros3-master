@@ -82,11 +82,18 @@ void RaccoonTail::GetBoundingBox(float& left, float& top, float& right, float& b
 		right = left + TAIL_BB_WIDTH;
 		bottom = top + TAIL_BB_HEIGHT;
 	}
+	else
+	{
+		left = 0;
+		top = 0;
+		right = 0;
+		bottom = 0;
+	}
 }
 
 void RaccoonTail::Render()
 {
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void RaccoonTail::Attack()

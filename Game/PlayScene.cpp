@@ -19,6 +19,7 @@
 #define OBJECT_TYPE_BROKEN_BRICK	13
 #define OBJECT_TYPE_KOOPA_GREEN		14
 #define OBJECT_TYPE_BRICKSTAND	15
+#define OBJECT_TYPE_P	16
 #define CAMERA_HEIGHT_1 245
 #define CAMERA_HEIGHT_2 184
 #define CAMERA_SPEED 0.5f
@@ -40,7 +41,7 @@ void PlayScene::LoadBaseObjects()
 	LoadBaseTextures();
 	if (player == NULL)
 	{
-		player = new Player(200, 300);
+		player = new Player(1900, 300);
 		DebugOut(L"[INFO] player CREATED! \n");
 	}
 	if (bullet1 == NULL)
@@ -199,6 +200,35 @@ void PlayScene::PlayerTailAttackEnemy()
 			}
 			koopa->hitByTail = true;
 		}
+		
+	}
+	for (UINT i = 0; i < listObjects.size(); i++)
+	{
+		if (listObjects[i]->GetType() == EntityType::BROKENBRICK)
+		{
+			BrokenBrick* brokenBrick = dynamic_cast<BrokenBrick*>(listObjects[i]);
+
+			if (tail->IsCollidingObject(brokenBrick))
+			{
+				//brokenBrick->isDestroyed = true;
+				if (listObjects[i]->x == 2032 && listObjects[i]->y == 368)
+				{
+					for (UINT i = 0; i < listitems.size(); i++)
+					{
+						if (listitems[i]->GetType() == EntityType::P)
+						{
+
+							ItemP* itemP = dynamic_cast<ItemP*>(listitems[i]);
+							itemP->isDone = true;
+							itemP->isBroken = true;
+
+						}
+					}
+				}
+				brokenBrick->SetState(STATE_DESTROYED);
+				//DebugOut(L"reset");
+			}
+		}
 	}
 }
 
@@ -266,6 +296,100 @@ void PlayScene::PlayerTouchItem()
 				/*if (money->isOnTop == false)
 					listitems[i]->SetState(MONEY_STATE_WALKING);*/
 				coin->SetDone(true);
+			}
+		}
+		if (listitems[i]->GetType() == EntityType::P)
+		{
+			if (player->IsCollidingObject(listitems[i]))
+			{
+				ItemP* itemP = dynamic_cast<ItemP*>(listitems[i]);
+				if (!itemP->isCollis)
+				{
+					itemP->isCollis = true;
+					//DebugOut(L"dap nut lan 1 \n");
+				}
+				else
+				{
+					//DebugOut(L"isOnTop = %d \n", itemP->isOnTop);
+					if (itemP->isOnTop)
+					{
+						//DebugOut(L"dap nut lan 1");
+						itemP->isDone = true;
+						if (!isCheckLoadCoin)
+						{
+							for (UINT i = 0; i < listObjects.size(); i++)
+							{
+								//DebugOut(L" show list object %d \n", listObjects[i]->tag);
+								if (listObjects[i]->tag == EntityType::BROKENBRICK)
+								{
+									BrokenBrick* brick = dynamic_cast<BrokenBrick*>(listObjects[i]);
+									if (brick->x == 2032 && brick->y == 368) // cuc gach do nut P
+									{
+										continue;
+									}
+									else
+									{
+										if (!brick->isDestroyed)
+										{
+											brick->SetState(STATE_HIDE);
+											//DebugOut(L"Hide 1");
+											float x = brick->x;
+											float y = brick->y;
+											CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+											Entity* obj = NULL;
+											obj = new Coin(x, y);
+											obj->SetPosition(x, y);
+											LPANIMATION_SET ani_set = animation_sets->Get(16);
+
+											obj->SetAnimationSet(ani_set);
+											obj->detailTag = COINBRICK;
+											listitems.push_back(obj);
+											//DebugOut(L"[test] add coin !\n");
+										}
+									}
+								}
+							}
+							isCheckLoadCoin = true;
+							countP = 0;
+						}
+					}
+				}
+			}
+			if (isCheckLoadCoin == true)
+			{
+				if (countP <400)
+					countP += 1;
+				else
+				{
+					for (UINT i = 0; i < listitems.size(); i++)
+					{
+						//DebugOut(L" show list object %d \n", listObjects[i]->tag);
+						if (listitems[i]->tag == EntityType::COIN && listitems[i]->detailTag == COINBRICK)
+						{
+							Coin* coin = dynamic_cast<Coin*>(listitems[i]);
+							if (!coin->isdone)
+							{
+								coin->SetDone(true);
+								//DebugOut(L"Hide 1");
+								float x = coin->x;
+								float y = coin->y;
+								CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+								Entity* obj = NULL;
+								obj = new BrokenBrick(1);
+								obj->SetPosition(x, y);
+								LPANIMATION_SET ani_set = animation_sets->Get(20);
+
+								obj->SetAnimationSet(ani_set);
+								listObjects.push_back(obj);
+								//DebugOut(L"[test] add broken brick !\n");
+							}
+						}
+					}
+					isCheckLoadCoin == false;
+				}
+				//DebugOut(L"%d \n", countP);
 			}
 		}
 	}
@@ -672,6 +796,7 @@ void PlayScene::_ParseSection_ANIMATION_SETS(string line)
 
 		LPANIMATION ani = animations->Get(ani_id);
 		s->push_back(ani);
+		DebugOut(L"add animation set %d anmation %d \n", ani_set_id, ani_id);
 	}
 
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
@@ -784,7 +909,16 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		/*LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);*/
 		listObjects.push_back(obj);
+		DebugOut(L"[test] add brick broken !\n");
 		//obj->id_broken_state= atoi(tokens[6].c_str());
+		break;
+	}
+	case OBJECT_TYPE_P:
+	{
+		obj = new ItemP(x,y);
+		obj->SetPosition(x, y);
+		listitems.push_back(obj);
+		DebugOut(L"[test] add point !\n");
 		break;
 	}
 	case OBJECT_TYPE_KOOPA_RED:

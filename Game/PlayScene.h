@@ -26,6 +26,7 @@
 #include "Money.h"
 #include "Gate.h"
 #include "RaccoonTail.h"
+#include "P.h"
 //#include "PowerUp.h"
 //#include "GunUp.h"
 
@@ -54,6 +55,8 @@ protected:
 	Bullet* bullet1;
 	Bullet* bullet2;
 	RaccoonTail* tail;
+	DWORD countP = 0;
+	bool isCheckLoadCoin = false;
 	//Bullet* bullet3;
 	//Bullet* supBullet;
 	//PowerUp* powerUp;

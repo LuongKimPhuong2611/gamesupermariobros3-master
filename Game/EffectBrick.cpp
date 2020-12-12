@@ -16,7 +16,7 @@ void EffectBrick::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 
 	x += dx;
 	y += dy;
-
+	//DebugOut(L"vx = %f , vy =%f \n", vx, vy);
 	/*if (y > CGame::GetInstance()->GetCamPosY() + SCREEN_HEIGHT / 2)
 		isFinishedUsing = true;*/
 }
