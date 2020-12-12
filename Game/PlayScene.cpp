@@ -219,11 +219,10 @@ void PlayScene::PlayerTailAttackEnemy()
 						{
 
 							ItemP* itemP = dynamic_cast<ItemP*>(listitems[i]);
-							itemP->isDone = true;
-							itemP->isBroken = true;
-
+							itemP->isCollis = true;
 						}
 					}
+					return;
 				}
 				brokenBrick->SetState(STATE_DESTROYED);
 				//DebugOut(L"reset");

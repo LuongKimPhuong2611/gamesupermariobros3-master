@@ -17,9 +17,9 @@ void Money::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (!isOnTop)
 	{
-		left = x +50;
-		top = y + 50;
-		right = left + 1;
+		left = x;
+		top = y + 16;
+		right = left + 7;
 		bottom = top + 1;
 	}
 	else
@@ -55,17 +55,24 @@ void Money::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 	if (isCollis == true && isStart == false)
 	{
 		timeDelay += dt;
-		if (timeDelay >= 150)
+		if (timeDelay >= 100)
 		{
 			alpha = 255;
-			vy = -0.19;
+			vy = -0.18;
 			if (oldY - 50 >= y)
 			{
 				isOnTop = true;
 				isCollis = false;
 				isStart = true;
+				oldY = y;
 			}
 		}
+	}
+	else if (isOnTop)
+	{
+		vy = 0.15;
+		if (abs(y - oldY) > 20)
+			isDone = true;
 	}
 
 
