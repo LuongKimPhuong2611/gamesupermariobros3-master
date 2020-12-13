@@ -11,6 +11,8 @@
 //}
 void VenusNoFire::Render()
 {
+	if (isdone)
+		animationSet->at(8)->Render(nx, x, y);
 	animationSet->at(state)->Render(nx, x, y);
 
 	RenderBoundingBox();
@@ -40,6 +42,8 @@ void VenusNoFire::SetState(int state)
 
 void VenusNoFire::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (isdone)
+		return;
 	left = x;
 	top = y;
 	right = x + VENUS_BOX_WIDTH;
@@ -48,7 +52,8 @@ void VenusNoFire::GetBoundingBox(float& left, float& top, float& right, float& b
 
 void VenusNoFire::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 {
-
+	if (isdone)
+		return;
 	Entity::Update(dt, coObjects);
 	y += dy;
 

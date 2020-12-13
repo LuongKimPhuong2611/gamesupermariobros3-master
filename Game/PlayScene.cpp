@@ -200,6 +200,22 @@ void PlayScene::PlayerTailAttackEnemy()
 			}
 			koopa->hitByTail = true;
 		}
+		else if (listEnemies[i]->GetType() == EntityType::VENUS)
+		{
+			Venus* venus = dynamic_cast<Venus*>(listEnemies[i]);
+			if (tail->IsCollidingObject(venus))
+			{
+				venus->isDeath = true;
+			}
+		}
+		else if (listEnemies[i]->GetType() == EntityType::VENUS)
+		{
+			Venus* venus = dynamic_cast<Venus*>(listEnemies[i]);
+			if (tail->IsCollidingObject(venus))
+			{
+				venus->isDeath = true;
+			}
+		}
 		
 	}
 	for (UINT i = 0; i < listObjects.size(); i++)
@@ -274,6 +290,7 @@ void PlayScene::PlayerTouchItem()
 					player->y -= 13;
 					mush->make100 = true;
 					Game::GetInstance()->Score += 100;
+					isCheckMushroom = true;
 				}
 				
 			}
@@ -395,9 +412,9 @@ void PlayScene::PlayerTouchItem()
 	for (UINT i = 0; i < listLeaf.size(); i++)
 	{
 
-		if (listLeaf[i]->GetType() == EntityType::LEAF && player->level == MARIO_LEVEL_BIG)
+		if (listLeaf[i]->GetType() == EntityType::LEAF && player->level == MARIO_LEVEL_BIG && isCheckMushroom == false)
 		{
-			if (player->IsCollidingObject(listLeaf[i]))
+			if (player->IsCollidingObject(listLeaf[i]) && player->level)
 			{
 				Leaf* leaf = dynamic_cast<Leaf*>(listLeaf[i]);
 				if (leaf->isOnTop == false)

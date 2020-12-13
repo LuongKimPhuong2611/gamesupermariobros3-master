@@ -135,6 +135,7 @@ enum EntityType
 	BROKENBRICK = 35,
 	BRICKSTAND = 36,
 	P = 37,
+	VENUSNOFIRE = 38,
 
 
 	//Item Zone 40-70

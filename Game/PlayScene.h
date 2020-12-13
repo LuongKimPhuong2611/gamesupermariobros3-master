@@ -57,6 +57,7 @@ protected:
 	RaccoonTail* tail;
 	DWORD countP = 0;
 	bool isCheckLoadCoin = false;
+	bool isCheckMushroom = false;
 	//Bullet* bullet3;
 	//Bullet* supBullet;
 	//PowerUp* powerUp;

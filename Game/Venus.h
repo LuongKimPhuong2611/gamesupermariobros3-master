@@ -32,6 +32,7 @@ enum TypeOfFirePiranha
 #define FIRE_PIRANHA_ANI_ATTACK_DOWN_LEFT	5
 #define FIRE_PIRANHA_ANI_ATTACK_UP_RIGHT	6
 #define FIRE_PIRANHA_ANI_ATTACK_DOWN_RIGHT	7
+#define FIRE_PIRANHA_ANI_ATTACK_DIE			8
 
 #define RED_FIRE_PIRANHA_MIN_Y				336
 #define RED_FIRE_PIRANHA_BBOX_WIDTH			16
@@ -78,7 +79,8 @@ public:
 	Player* player;
 	float minPosY;
 	bool vanish;
-
+	bool isDeath;
+	bool isDoneDeath;
 	Venus(Player* mario, int piranhaType);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

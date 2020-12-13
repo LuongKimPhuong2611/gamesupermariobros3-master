@@ -3,7 +3,10 @@
 
 Venus::Venus(Player* mario, int piranhaType)
 {
-	tag = EntityType::VENUS;
+	if (piranhaType == 1)
+		tag = EntityType::VENUS;
+	if (piranhaType == 2)
+		tag = EntityType::VENUSNOFIRE;
 	player = mario;
 	this->piranhaType = piranhaType;
 
@@ -13,6 +16,8 @@ Venus::Venus(Player* mario, int piranhaType)
 
 void Venus::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 {
+	if (isDeath)
+		return;
 	Entity::Update(dt);
 	y += dy;
 	if (vanish)
@@ -71,6 +76,8 @@ void Venus::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 
 void Venus::Render()
 {
+	if (isDoneDeath)
+		return;
 	int ani;
 	playerArea = GetCurrentPlayerArea();
 
@@ -126,20 +133,27 @@ void Venus::Render()
 		}
 		last_face_ani = ani;
 	}
+	if (isDeath)
+		ani = FIRE_PIRANHA_ANI_ATTACK_DIE;
 
 	if (!vanish)
 		animationSet->at(ani)->Render(1, x, y);
-
+	if (animationSet->at(ani)->GetCurrentFrame() == 4 && ani == FIRE_PIRANHA_ANI_ATTACK_DIE)
+	{
+		isDoneDeath = true;
+	}
 	for (LPVENUSBULLET fireball : listFireball)
 		fireball->Render();
 	//RenderBoundingBox();
+	DebugOut(L"ani %d \n", ani);
 }
 
 void Venus::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	if (vanish)
 		return;
-
+	if (isDeath)
+		return;
 	if (piranhaType == TypeOfFirePiranha::RED)
 	{
 		l = x;
